@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	param := "help"
+	param := "all"
 	if len(os.Args) > 1 {
 		param = os.Args[1]
 	}

@@ -248,9 +248,10 @@ func From(period Period, filePath string) *Pipeline {
 	// Help wanted?
 	if period == "help" {
 		fmt.Fprintln(os.Stderr)
-		fmt.Fprintln(os.Stderr, "FROM is part of the memo's famous toolbox")
-		fmt.Fprintln(os.Stderr, "-----------------------------------------")
-		fmt.Fprintln(os.Stderr, "Usage: from <period> | further tools")
+		fmt.Fprintln(os.Stderr, "FROM is part of memo's famous toolbox")
+		fmt.Fprintln(os.Stderr, "-------------------------------------")
+		fmt.Fprintln(os.Stderr, "Usage: from [<period>] | further tools")
+		fmt.Fprintln(os.Stderr, "       from help")
 		fmt.Fprintln(os.Stderr)
 		fmt.Fprintln(os.Stderr, "It reads an index file for memos. Entries get filtered by periods of time. The")
 		fmt.Fprintln(os.Stderr, "periods are described verbally. Dates or timestamps are not supported.")
@@ -272,8 +273,6 @@ func From(period Period, filePath string) *Pipeline {
 		fmt.Fprintln(os.Stderr, "Memo's toolbox contains these tool chains ...")
 		fmt.Fprintln(os.Stderr, "  ... memo, taggit, keep")
 		fmt.Fprintln(os.Stderr, "  ... from, tagged, stdout")
-		fmt.Fprintln(os.Stderr, "It's inspired by Napoleon as a partner of Timothy Truckle and the more modern")
-		fmt.Fprintln(os.Stderr, "aunties in Gibson's trilogy about stubs.")
 		fmt.Fprintln(os.Stderr)
 		os.Exit(0)
 	}
@@ -349,6 +348,25 @@ func From(period Period, filePath string) *Pipeline {
 // used by tagged
 //////////////////////////////////////////////////////////
 func Tagged(rd io.Reader, tags ...string) *Pipeline {
+	// Help wanted?
+	if len(tags) > 0 && tags[0] == "help" {
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintln(os.Stderr, "TAGGED is part of memo's famous toolbox")
+		fmt.Fprintln(os.Stderr, "---------------------------------------")
+		fmt.Fprintln(os.Stderr, "Usage: tagged <tag> [<tag2> <tag3> <tagn>] | further tools")
+		fmt.Fprintln(os.Stderr, "       tagged help")
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintln(os.Stderr, "It takes a list of index entries for memos from the pipe. They")
+		fmt.Fprintln(os.Stderr, "get filtered by the tags provided as parameters. Only these entries,")
+		fmt.Fprintln(os.Stderr, "which are tagged with all tags, will survive and get piped to the")
+		fmt.Fprintln(os.Stderr, "next tool in the chain.")
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintln(os.Stderr, "Memo's toolbox contains these tool chains ...")
+		fmt.Fprintln(os.Stderr, "  ... memo, taggit, keep")
+		fmt.Fprintln(os.Stderr, "  ... from, tagged, stdout")
+		fmt.Fprintln(os.Stderr)
+		os.Exit(0)
+	}
 	entries := make(map[string]IndexEntry)
 	err := Unmarshal(rd, &entries)
 	if err != nil {
@@ -395,6 +413,34 @@ func Tagged(rd io.Reader, tags ...string) *Pipeline {
 // used by stdout
 //////////////////////////////////////////////////////////
 func Stdout(rd io.Reader, what string) *Pipeline {
+	// Help wanted?
+	if what == "help" {
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintln(os.Stderr, "STDOUT is part of memo's famous toolbox")
+		fmt.Fprintln(os.Stderr, "---------------------------------------")
+		fmt.Fprintln(os.Stderr, "Usage: stdout [<what>]")
+		fmt.Fprintln(os.Stderr, "       stdout help")
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintln(os.Stderr, "It takes a list of index entries for memos from the pipe. Next it")
+		fmt.Fprintln(os.Stderr, "looks for the memo files and reads the content and metadata.")
+		fmt.Fprintln(os.Stderr, "Depending on the optional parameter it prints more or less details")
+		fmt.Fprintln(os.Stderr, "from the memos to stdout in the terminal. The output may be")
+		fmt.Fprintln(os.Stderr, "piped to any other tools as well, but memo's tool chain ends here.")
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintln(os.Stderr, "Following output formats taken by <what> are supported by now ...")
+		//   short   ... memo only (default)
+		//   long    ... all fields
+		//   verbose ... all fields with labels
+		fmt.Fprintln(os.Stderr, "  ✓ short ... memo only (default)")
+		fmt.Fprintln(os.Stderr, "  ✓ long ... all fields")
+		fmt.Fprintln(os.Stderr, "  ✓ verbose ... all fields with labels")
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintln(os.Stderr, "Memo's toolbox contains these tool chains ...")
+		fmt.Fprintln(os.Stderr, "  ... memo, taggit, keep")
+		fmt.Fprintln(os.Stderr, "  ... from, tagged, stdout")
+		fmt.Fprintln(os.Stderr)
+		os.Exit(0)
+	}
 	//////////////////////////////////////////////////////
 	// Handle input vi pipe from previous process
 	// Should be a list of index entries
